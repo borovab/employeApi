@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { createEmployee, updateEmployee } from "../services/employeeService";
+import "../App.css";
 
 export default function EmployeeForm({ editing, onSaved }) {
   const [form, setForm] = useState({
@@ -21,10 +22,8 @@ export default function EmployeeForm({ editing, onSaved }) {
     e.preventDefault();
 
     try {
-      if (editing)
-        await updateEmployee(editing.id, form);
-      else
-        await createEmployee(form);
+      if (editing) await updateEmployee(editing.id, form);
+      else await createEmployee(form);
 
       onSaved();
     } catch (err) {
@@ -33,16 +32,16 @@ export default function EmployeeForm({ editing, onSaved }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 bg-gray-100">
-      <h2 className="text-xl font-bold mb-4">
+    <form onSubmit={handleSubmit} className="card">
+      <h2 className="card-title">
         {editing ? "Edit Employee" : "Add Employee"}
       </h2>
 
-      <div className="grid gap-2">
+      <div className="gap-15">
         <input
           name="firstName"
           placeholder="First Name"
-          className="border p-2"
+          className="input"
           value={form.firstName}
           onChange={handleChange}
         />
@@ -50,7 +49,7 @@ export default function EmployeeForm({ editing, onSaved }) {
         <input
           name="lastName"
           placeholder="Last Name"
-          className="border p-2"
+          className="input"
           value={form.lastName}
           onChange={handleChange}
         />
@@ -58,7 +57,7 @@ export default function EmployeeForm({ editing, onSaved }) {
         <input
           type="date"
           name="dateOfBirth"
-          className="border p-2"
+          className="input"
           value={form.dateOfBirth}
           onChange={handleChange}
         />
@@ -66,12 +65,12 @@ export default function EmployeeForm({ editing, onSaved }) {
         <input
           name="educationLevel"
           placeholder="Education Level"
-          className="border p-2"
+          className="input"
           value={form.educationLevel}
           onChange={handleChange}
         />
 
-        <button className="bg-green-600 text-white p-2 mt-2">
+        <button className="btn">
           {editing ? "Save Changes" : "Add Employee"}
         </button>
       </div>

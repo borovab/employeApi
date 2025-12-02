@@ -1,6 +1,7 @@
 import { useState } from "react";
 import EmployeeList from "./components/EmployeeList";
 import EmployeeForm from "./components/EmployeeForm";
+import "./App.css";
 
 export default function App() {
   const [editing, setEditing] = useState(null);
@@ -12,7 +13,7 @@ export default function App() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto mt-10">
+    <div className="center-page">
       <EmployeeForm editing={editing} onSaved={reload} />
       <EmployeeList key={refreshKey} onEdit={(e) => setEditing(e)} />
     </div>

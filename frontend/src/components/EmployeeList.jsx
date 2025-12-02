@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getEmployees, deleteEmployee } from "../services/employeeService";
+import "../App.css";
 
 export default function EmployeeList({ onEdit }) {
   const [employees, setEmployees] = useState([]);
@@ -21,39 +22,38 @@ export default function EmployeeList({ onEdit }) {
   }
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">Employee List</h2>
+    <div className="card">
+      <h2 className="card-title">Employee List</h2>
 
-      <table className="w-full border">
+      <table className="table">
         <thead>
-          <tr className="bg-gray-200">
-            <th className="p-2 border">ID</th>
-            <th className="p-2 border">First Name</th>
-            <th className="p-2 border">Last Name</th>
-            <th className="p-2 border">Education</th>
-            <th className="p-2 border">Birthdate</th>
-            <th className="p-2 border">Actions</th>
+          <tr>
+            <th>ID</th>
+            <th>First</th>
+            <th>Last</th>
+            <th>Education</th>
+            <th>Birthdate</th>
+            <th>Actions</th>
           </tr>
         </thead>
 
         <tbody>
           {employees.map((e) => (
             <tr key={e.id}>
-              <td className="p-2 border">{e.id}</td>
-              <td className="p-2 border">{e.firstName}</td>
-              <td className="p-2 border">{e.lastName}</td>
-              <td className="p-2 border">{e.educationLevel}</td>
-              <td className="p-2 border">{e.dateOfBirth?.split("T")[0]}</td>
-              <td className="p-2 border flex gap-2">
+              <td>{e.id}</td>
+              <td>{e.firstName}</td>
+              <td>{e.lastName}</td>
+              <td>{e.educationLevel}</td>
+              <td>{e.dateOfBirth?.split("T")[0]}</td>
+              <td>
                 <button
-                  className="px-2 bg-blue-500 text-white"
+                  className="btn-small btn-edit"
                   onClick={() => onEdit(e)}
                 >
                   Edit
-                </button>
-
+                </button>{" "}
                 <button
-                  className="px-2 bg-red-500 text-white"
+                  className="btn-small btn-delete"
                   onClick={() => handleDelete(e.id)}
                 >
                   Delete
