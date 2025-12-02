@@ -3,10 +3,21 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add Controllers
+// CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
+// Controllers
 builder.Services.AddControllers();
 
-// PostgreSQL Database
+// PostgreSQL
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -16,17 +27,14 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// AUTO-MIGRATION – krijon tabelat në PostgreSQL nese mungojnë
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.EnsureCreated();
-}
+// Enable CORS
+app.UseCors("AllowAll");
 
-// Swagger (Production + Development)
+// Swagger
 app.UseSwagger();
 app.UseSwaggerUI();
 
+// Controllers
 app.MapControllers();
 
 app.Run();
