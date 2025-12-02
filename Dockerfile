@@ -11,7 +11,7 @@ WORKDIR /src/backend
 # Publish the project
 RUN dotnet publish -c Release -o /app
 
-# Runtime stage
+# Runtime staged
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build /app .
