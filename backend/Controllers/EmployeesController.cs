@@ -1,7 +1,6 @@
-using EmployeeApi.Data;
-using EmployeeApi.DTOs;
-using EmployeeApi.Models;
 using Microsoft.AspNetCore.Mvc;
+using EmployeeApi.Data;
+using EmployeeApi.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeApi.Controllers;
@@ -10,95 +9,58 @@ namespace EmployeeApi.Controllers;
 [Route("api/[controller]")]
 public class EmployeesController : ControllerBase
 {
-    private readonly AppDbContext _context;
+    private readonly AppDbContext _db;
 
-    public EmployeesController(AppDbContext context)
+    public EmployeesController(AppDbContext db)
     {
-        _context = context;
+        _db = db;
     }
-
-    private int CalculateAge(DateTime dob)
-    {
-        var today = DateTime.Today;
-        var age = today.Year - dob.Year;
-        if (dob > today.AddYears(-age)) age--;
-        return age;
-    }
-
-    private EmployeeDto ToDto(Employee e) =>
-        new()
-        {
-            Id = e.Id,
-            FirstName = e.FirstName,
-            LastName = e.LastName,
-            DateOfBirth = e.DateOfBirth,
-            EducationLevel = e.EducationLevel,
-            Age = CalculateAge(e.DateOfBirth)
-        };
 
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var list = await _context.Employees.ToListAsync();
-        return Ok(list.Select(ToDto));
+        return Ok(await _db.Employees.ToListAsync());
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> Get(int id)
     {
-        var employee = await _context.Employees.FindAsync(id);
-        if (employee == null)
-            return NotFound();
-
-        return Ok(ToDto(employee));
+        var emp = await _db.Employees.FindAsync(id);
+        if (emp == null) return NotFound();
+        return Ok(emp);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateEmployeeDto dto)
+    public async Task<IActionResult> Create([FromBody] Employee e)
     {
-        var employee = new Employee
-        {
-            FirstName = dto.FirstName,
-            LastName = dto.LastName,
-            DateOfBirth = dto.DateOfBirth,
-            EducationLevel = dto.EducationLevel
-        };
-
-        _context.Employees.Add(employee);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction(nameof(GetById),
-            new { id = employee.Id },
-            ToDto(employee));
+        _db.Employees.Add(e);
+        await _db.SaveChangesAsync();
+        return Ok(e);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, UpdateEmployeeDto dto)
+    public async Task<IActionResult> Update(int id, [FromBody] Employee e)
     {
-        var employee = await _context.Employees.FindAsync(id);
-        if (employee == null)
-            return NotFound();
+        var existing = await _db.Employees.FindAsync(id);
+        if (existing == null) return NotFound();
 
-        employee.FirstName = dto.FirstName;
-        employee.LastName = dto.LastName;
-        employee.DateOfBirth = dto.DateOfBirth;
-        employee.EducationLevel = dto.EducationLevel;
+        existing.FirstName = e.FirstName;
+        existing.LastName = e.LastName;
+        existing.DateOfBirth = e.DateOfBirth;
+        existing.EducationLevel = e.EducationLevel;
 
-        await _context.SaveChangesAsync();
-
-        return Ok(ToDto(employee));
+        await _db.SaveChangesAsync();
+        return Ok(existing);
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var employee = await _context.Employees.FindAsync(id);
-        if (employee == null)
-            return NotFound();
+        var emp = await _db.Employees.FindAsync(id);
+        if (emp == null) return NotFound();
 
-        _context.Employees.Remove(employee);
-        await _context.SaveChangesAsync();
-
-        return NoContent();
+        _db.Employees.Remove(emp);
+        await _db.SaveChangesAsync();
+        return Ok();
     }
 }

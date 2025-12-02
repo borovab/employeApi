@@ -1,83 +1,80 @@
 import { useState, useEffect } from "react";
 import { createEmployee, updateEmployee } from "../services/employeeService";
 
-export default function EmployeeForm({ selected, onSaved }) {
-
+export default function EmployeeForm({ editing, onSaved }) {
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
     dateOfBirth: "",
-    educationLevel: ""
+    educationLevel: "",
   });
 
   useEffect(() => {
-    if (selected) setForm(selected);
-  }, [selected]);
+    if (editing) setForm(editing);
+  }, [editing]);
 
   function handleChange(e) {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value
-    });
+    setForm({ ...form, [e.target.name]: e.target.value });
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
 
-    if (selected) {
-      await updateEmployee(selected.id, form);
-    } else {
-      await createEmployee(form);
-    }
+    try {
+      if (editing)
+        await updateEmployee(editing.id, form);
+      else
+        await createEmployee(form);
 
-    onSaved();
-    setForm({
-      firstName: "",
-      lastName: "",
-      dateOfBirth: "",
-      educationLevel: ""
-    });
+      onSaved();
+    } catch (err) {
+      alert("Gabim: " + err.message);
+    }
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>{selected ? "Edit Employee" : "Add Employee"}</h2>
+    <form onSubmit={handleSubmit} className="p-4 bg-gray-100">
+      <h2 className="text-xl font-bold mb-4">
+        {editing ? "Edit Employee" : "Add Employee"}
+      </h2>
 
-      <input
-        name="firstName"
-        placeholder="First Name"
-        value={form.firstName}
-        onChange={handleChange}
-        required
-      />
+      <div className="grid gap-2">
+        <input
+          name="firstName"
+          placeholder="First Name"
+          className="border p-2"
+          value={form.firstName}
+          onChange={handleChange}
+        />
 
-      <input
-        name="lastName"
-        placeholder="Last Name"
-        value={form.lastName}
-        onChange={handleChange}
-        required
-      />
+        <input
+          name="lastName"
+          placeholder="Last Name"
+          className="border p-2"
+          value={form.lastName}
+          onChange={handleChange}
+        />
 
-      <input
-        name="dateOfBirth"
-        type="date"
-        value={form.dateOfBirth}
-        onChange={handleChange}
-        required
-      />
+        <input
+          type="date"
+          name="dateOfBirth"
+          className="border p-2"
+          value={form.dateOfBirth}
+          onChange={handleChange}
+        />
 
-      <input
-        name="educationLevel"
-        placeholder="Education Level"
-        value={form.educationLevel}
-        onChange={handleChange}
-        required
-      />
+        <input
+          name="educationLevel"
+          placeholder="Education Level"
+          className="border p-2"
+          value={form.educationLevel}
+          onChange={handleChange}
+        />
 
-      <button type="submit">
-        {selected ? "Update" : "Add"}
-      </button>
+        <button className="bg-green-600 text-white p-2 mt-2">
+          {editing ? "Save Changes" : "Add Employee"}
+        </button>
+      </div>
     </form>
   );
 }

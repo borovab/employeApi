@@ -16,7 +16,10 @@ export async function createEmployee(data) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  return res.json();
+
+  const text = await res.text();
+  if (!res.ok) throw new Error(text);
+  return JSON.parse(text);
 }
 
 export async function updateEmployee(id, data) {
@@ -25,6 +28,7 @@ export async function updateEmployee(id, data) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
+
   return res.json();
 }
 
