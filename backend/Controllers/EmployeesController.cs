@@ -16,18 +16,15 @@ public class EmployeesController : ControllerBase
         _db = db;
     }
 
-    // ======================
     // GET /api/employees
-    // ======================
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        return Ok(await _db.Employees.ToListAsync());
+        var list = await _db.Employees.ToListAsync();
+        return Ok(list);
     }
 
-    // ======================
     // GET /api/employees/{id}
-    // ======================
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id)
     {
@@ -36,22 +33,10 @@ public class EmployeesController : ControllerBase
         return Ok(emp);
     }
 
-    // ======================
     // POST /api/employees
-    // ======================
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] Employee e)
     {
-        if (e == null)
-            return BadRequest("Employee data is required.");
-
-        if (string.IsNullOrWhiteSpace(e.FirstName) ||
-            string.IsNullOrWhiteSpace(e.LastName) ||
-            string.IsNullOrWhiteSpace(e.EducationLevel))
-        {
-            return BadRequest("Missing required fields.");
-        }
-
         try
         {
             _db.Employees.Add(e);
@@ -60,13 +45,11 @@ public class EmployeesController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ex.Message);
+            return StatusCode(500, $"Gabim: {ex.Message}");
         }
     }
 
-    // ======================
     // PUT /api/employees/{id}
-    // ======================
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] Employee e)
     {
@@ -85,13 +68,11 @@ public class EmployeesController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ex.Message);
+            return StatusCode(500, $"Gabim: {ex.Message}");
         }
     }
 
-    // ======================
     // DELETE /api/employees/{id}
-    // ======================
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
