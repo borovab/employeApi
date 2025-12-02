@@ -11,7 +11,14 @@ export default function EmployeeForm({ editing, onSaved }) {
   });
 
   useEffect(() => {
-    if (editing) setForm(editing);
+    if (editing) {
+      setForm({
+        firstName: editing.firstName,
+        lastName: editing.lastName,
+        dateOfBirth: editing.dateOfBirth.split("T")[0],
+        educationLevel: editing.educationLevel,
+      });
+    }
   }, [editing]);
 
   function handleChange(e) {
@@ -32,48 +39,44 @@ export default function EmployeeForm({ editing, onSaved }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="card">
-      <h2 className="card-title">
-        {editing ? "Edit Employee" : "Add Employee"}
-      </h2>
+    <form onSubmit={handleSubmit}>
+      <h2>{editing ? "Edit Employee" : "Add Employee"}</h2>
 
-      <div className="gap-15">
-        <input
-          name="firstName"
-          placeholder="First Name"
-          className="input"
-          value={form.firstName}
-          onChange={handleChange}
-        />
+      <input
+        name="firstName"
+        placeholder="First Name"
+        className="input"
+        value={form.firstName}
+        onChange={handleChange}
+      />
 
-        <input
-          name="lastName"
-          placeholder="Last Name"
-          className="input"
-          value={form.lastName}
-          onChange={handleChange}
-        />
+      <input
+        name="lastName"
+        placeholder="Last Name"
+        className="input"
+        value={form.lastName}
+        onChange={handleChange}
+      />
 
-        <input
-          type="date"
-          name="dateOfBirth"
-          className="input"
-          value={form.dateOfBirth}
-          onChange={handleChange}
-        />
+      <input
+        type="date"
+        name="dateOfBirth"
+        className="input"
+        value={form.dateOfBirth}
+        onChange={handleChange}
+      />
 
-        <input
-          name="educationLevel"
-          placeholder="Education Level"
-          className="input"
-          value={form.educationLevel}
-          onChange={handleChange}
-        />
+      <input
+        name="educationLevel"
+        placeholder="Education Level"
+        className="input"
+        value={form.educationLevel}
+        onChange={handleChange}
+      />
 
-        <button className="btn">
-          {editing ? "Save Changes" : "Add Employee"}
-        </button>
-      </div>
+      <button className="btn">
+        {editing ? "Save Changes" : "Add Employee"}
+      </button>
     </form>
   );
 }

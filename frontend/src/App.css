@@ -19,13 +19,15 @@
 
 /* ----- INPUT FIELDS ----- */
 .input {
-  width: 100%;
+  width: 90%;
+  margin: auto;
   padding: 12px;
   border: 1px solid #cbd5e1;
   border-radius: 10px;
   font-size: 15px;
   outline: none;
   transition: 0.2s;
+  gap: 2px;
 }
 
 .input:focus {
@@ -122,4 +124,50 @@
   padding-top: 30px;
   gap: 30px;               /* Distanca mes tyre */
   width: 100%;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-container {
+  background: white;
+  padding: 20px;
+  width: 600px;
+  border-radius: 10px;
+  position: relative;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+.modal-close {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  border: none;
+  background: none;
+  font-size: 26px;
+  cursor: pointer;
+}
+.btn-add {
+  background: #4caf50;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  border: none;
+  font-size: 16px;
+}
+
+.btn-add:hover {
+  background: #45a049;
+}
+.container {
+  margin: a;
 }

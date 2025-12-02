@@ -1,21 +1,40 @@
 import { useState } from "react";
 import EmployeeList from "./components/EmployeeList";
 import EmployeeForm from "./components/EmployeeForm";
+import Modal from "./components/Modal";
 import "./App.css";
 
 export default function App() {
   const [editing, setEditing] = useState(null);
-  const [refreshKey, setRefreshKey] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
 
-  function reload() {
+  function handleEdit(emp) {
+    setEditing(emp);
+    setModalOpen(true);
+  }
+
+  function handleAdd() {
+    setEditing(null);        // form i pastër
+    setModalOpen(true);      // hap modalin
+  }
+
+  function handleSaved() {
+    setModalOpen(false);
     setEditing(null);
-    setRefreshKey(refreshKey + 1);
   }
 
   return (
-    <div className="center-page">
-      <EmployeeForm editing={editing} onSaved={reload} />
-      <EmployeeList key={refreshKey} onEdit={(e) => setEditing(e)} />
+    <div className="container">
+
+      <button className="btn btn-add" onClick={handleAdd}>
+        ➕ Add Employee
+      </button>
+
+      <EmployeeList onEdit={handleEdit} />
+
+      <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+        <EmployeeForm editing={editing} onSaved={handleSaved} />
+      </Modal>
     </div>
   );
 }

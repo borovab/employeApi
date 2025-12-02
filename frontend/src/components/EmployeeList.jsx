@@ -45,13 +45,12 @@ export default function EmployeeList({ onEdit }) {
               <td>{e.lastName}</td>
               <td>{e.educationLevel}</td>
               <td>{e.dateOfBirth?.split("T")[0]}</td>
+
               <td>
-                <button
-                  className="btn-small btn-edit"
-                  onClick={() => onEdit(e)}
-                >
+                <button className="btn-small btn-edit" onClick={() => onEdit(e)}>
                   Edit
-                </button>{" "}
+                </button>
+
                 <button
                   className="btn-small btn-delete"
                   onClick={() => handleDelete(e.id)}
@@ -59,6 +58,7 @@ export default function EmployeeList({ onEdit }) {
                   Delete
                 </button>
               </td>
+
             </tr>
           ))}
         </tbody>
