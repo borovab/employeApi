@@ -39,6 +39,9 @@ public class EmployeesController : ControllerBase
     {
         try
         {
+            // FIX: PostgreSQL kërkon DateTime UTC
+            e.DateOfBirth = DateTime.SpecifyKind(e.DateOfBirth, DateTimeKind.Utc);
+
             _db.Employees.Add(e);
             await _db.SaveChangesAsync();
             return Ok(e);
@@ -60,7 +63,10 @@ public class EmployeesController : ControllerBase
         {
             existing.FirstName = e.FirstName;
             existing.LastName = e.LastName;
-            existing.DateOfBirth = e.DateOfBirth;
+
+            // FIX: PostgreSQL kërkon DateTime UTC
+            existing.DateOfBirth = DateTime.SpecifyKind(e.DateOfBirth, DateTimeKind.Utc);
+
             existing.EducationLevel = e.EducationLevel;
 
             await _db.SaveChangesAsync();
