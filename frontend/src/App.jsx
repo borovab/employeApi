@@ -2,7 +2,6 @@ import { useState } from "react";
 import EmployeeList from "./components/EmployeeList";
 import EmployeeForm from "./components/EmployeeForm";
 import Modal from "./components/Modal";
-import "./App.css";
 
 export default function App() {
   const [editing, setEditing] = useState(null);
@@ -14,8 +13,8 @@ export default function App() {
   }
 
   function handleAdd() {
-    setEditing(null);        // form i pastër
-    setModalOpen(true);      // hap modalin
+    setEditing(null);
+    setModalOpen(true);
   }
 
   function handleSaved() {
@@ -24,9 +23,11 @@ export default function App() {
   }
 
   return (
-    <div className="container">
-
-      <button className="btn btn-add" onClick={handleAdd}>
+    <div className="max-w-4xl mx-auto p-4 space-y-6">
+      <button
+        onClick={handleAdd}
+        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+      >
         ➕ Add Employee
       </button>
 

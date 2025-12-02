@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { createEmployee, updateEmployee } from "../services/employeeService";
-import "../App.css";
 
 export default function EmployeeForm({ editing, onSaved }) {
   const [form, setForm] = useState({
@@ -39,13 +38,18 @@ export default function EmployeeForm({ editing, onSaved }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>{editing ? "Edit Employee" : "Add Employee"}</h2>
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white shadow-md rounded-xl p-6 space-y-4 w-full"
+    >
+      <h2 className="text-xl font-semibold text-slate-700">
+        {editing ? "Edit Employee" : "Add Employee"}
+      </h2>
 
       <input
         name="firstName"
         placeholder="First Name"
-        className="input"
+        className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-400"
         value={form.firstName}
         onChange={handleChange}
       />
@@ -53,7 +57,7 @@ export default function EmployeeForm({ editing, onSaved }) {
       <input
         name="lastName"
         placeholder="Last Name"
-        className="input"
+        className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-400"
         value={form.lastName}
         onChange={handleChange}
       />
@@ -61,7 +65,7 @@ export default function EmployeeForm({ editing, onSaved }) {
       <input
         type="date"
         name="dateOfBirth"
-        className="input"
+        className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-400"
         value={form.dateOfBirth}
         onChange={handleChange}
       />
@@ -69,12 +73,12 @@ export default function EmployeeForm({ editing, onSaved }) {
       <input
         name="educationLevel"
         placeholder="Education Level"
-        className="input"
+        className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-400"
         value={form.educationLevel}
         onChange={handleChange}
       />
 
-      <button className="btn">
+      <button className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition">
         {editing ? "Save Changes" : "Add Employee"}
       </button>
     </form>

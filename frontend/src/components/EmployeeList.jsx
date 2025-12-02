@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { getEmployees, deleteEmployee } from "../services/employeeService";
-import "../App.css";
 
 export default function EmployeeList({ onEdit }) {
   const [employees, setEmployees] = useState([]);
@@ -22,37 +21,47 @@ export default function EmployeeList({ onEdit }) {
   }
 
   return (
-    <div className="card">
-      <h2 className="card-title">Employee List</h2>
+    <div className="bg-white shadow-md rounded-xl p-6 w-full overflow-x-auto">
+      <h2 className="text-2xl font-semibold mb-4 text-slate-700">
+        Employee List
+      </h2>
 
-      <table className="table">
+      <table className="min-w-full border-collapse text-sm">
         <thead>
-          <tr>
-            <th>ID</th>
-            <th>First</th>
-            <th>Last</th>
-            <th>Education</th>
-            <th>Birthdate</th>
-            <th>Actions</th>
+          <tr className="bg-slate-100">
+            <th className="p-3 text-left">ID</th>
+            <th className="p-3 text-left">First</th>
+            <th className="p-3 text-left">Last</th>
+            <th className="p-3 text-left">Education</th>
+            <th className="p-3 text-left">Birthdate</th>
+            <th className="p-3 text-left">Actions</th>
           </tr>
         </thead>
 
         <tbody>
           {employees.map((e) => (
-            <tr key={e.id}>
-              <td>{e.id}</td>
-              <td>{e.firstName}</td>
-              <td>{e.lastName}</td>
-              <td>{e.educationLevel}</td>
-              <td>{e.dateOfBirth?.split("T")[0]}</td>
+            <tr
+              key={e.id}
+              className="border-b hover:bg-slate-50 transition"
+            >
+              <td className="p-3">{e.id}</td>
+              <td className="p-3">{e.firstName}</td>
+              <td className="p-3">{e.lastName}</td>
+              <td className="p-3">{e.educationLevel}</td>
+              <td className="p-3">
+                {e.dateOfBirth?.split("T")[0]}
+              </td>
 
-              <td>
-                <button className="btn-small btn-edit" onClick={() => onEdit(e)}>
+              <td className="p-3 flex gap-2">
+                <button
+                  className="px-3 py-1 bg-blue-500 text-white rounded-md text-xs hover:bg-blue-600"
+                  onClick={() => onEdit(e)}
+                >
                   Edit
                 </button>
 
                 <button
-                  className="btn-small btn-delete"
+                  className="px-3 py-1 bg-red-500 text-white rounded-md text-xs hover:bg-red-600"
                   onClick={() => handleDelete(e.id)}
                 >
                   Delete
